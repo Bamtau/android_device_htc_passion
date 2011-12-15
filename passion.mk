@@ -84,7 +84,7 @@ PRODUCT_PACKAGES += \
 #    libmemalloc \
 #    libtilerenderer
 
-PRODUCT_LOCALES := en
+PRODUCT_LOCALES := es
 
 # Passion uses high-density artwork where available
 PRODUCT_AAPT_CONFIG := normal hdpi
