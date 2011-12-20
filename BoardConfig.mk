@@ -83,12 +83,13 @@ BOARD_USE_KINETO_COMPATIBILITY := true
 #Compass/Accererometer
 BOARD_VENDOR_USE_AKMD := akm8973
 
-# Hardware rendering
+## Hardware rendering
+## doesn't actually work until we have hwcomposer
+#BOARD_USES_OVERLAY := true
+USE_OPENGL_RENDERER := false
 BOARD_EGL_CFG := device/htc/passion/egl.cfg
-BOARD_USES_OVERLAY := true
-#USE_OPENGL_RENDERER := true
-#BOARD_USES_HGL := true
-COMMON_GLOBAL_CFLAGS += -DMISSING_EGL_EXTERNAL_IMAGE -DMISSING_EGL_PIXEL_FORMAT_YV12 -DMISSING_GRALLOC_BUFFERS
+## for rmcc egl hack
+COMMON_GLOBAL_CFLAGS += \
 
 # Qcom board
 BOARD_VENDOR_QCOM_AMSS_VERSION := 3200
