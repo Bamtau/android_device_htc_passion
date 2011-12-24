@@ -5,7 +5,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+# http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
     wifi.supplicant_scan_interval=180 \
     ro.media.dec.jpeg.memcap=20000000 \
     ro.opengles.version=131072 \
-    dalvik.vm.heapsize=48m
+    dalvik.vm.heapsize=48m \
 
 # Ril properties
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -34,26 +34,26 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.ril.hsxpa=2 \
     ro.ril.hsdpa.category=8 \
     ro.ril.hsupa.category=5 \
-    ro.ril.gprsclass=10 #bravo is at 12
+    ro.ril.gprsclass=10 \
 
 # Stuff from bravo that might fix network issues
 # I'm not sure what most of this means
 #PRODUCT_PROPERTY_OVERRIDES += \
-#    ro.ril.ecc.HTC-ELL=92,93,94 \
-#    ro.ril.ecc.HTC-WWE=999 \
-#    ro.ril.enable.a52.HTC-ITA=1 \
-#    ro.ril.enable.a53.HTC-ITA=1 \
-#    ro.ril.enable.a52=0 \
-#    ro.ril.enable.a53=1 \
-#    ro.ril.enable.dtm=1 \
-#    mobiledata.interfaces=rmnet0,rmnet1,rmnet2 \
-#    ro.ril.enable.prl.recognition=1
+# ro.ril.ecc.HTC-ELL=92,93,94 \
+# ro.ril.ecc.HTC-WWE=999 \
+# ro.ril.enable.a52.HTC-ITA=1 \
+# ro.ril.enable.a53.HTC-ITA=1 \
+# ro.ril.enable.a52=0 \
+# ro.ril.enable.a53=1 \
+# ro.ril.enable.dtm=1 \
+# mobiledata.interfaces=rmnet0,rmnet1,rmnet2 \
+# ro.ril.enable.prl.recognition=1
 
 # Default network type.
 # 0 => /* GSM/WCDMA (WCDMA preferred) */
 # 3 => /* GSM/WCDMA (auto mode, according to PRL) */
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.telephony.default_network=0
+    ro.telephony.default_network=3 
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
@@ -61,17 +61,17 @@ PRODUCT_TAGS += dalvik.gc.type-precise
 # Ril workaround
 ADDITIONAL_BUILD_PROPERTIES += \
     ro.telephony.ril.v3=signalstrength
-    #,skipbrokendatacall,facilitylock,datacall,icccardstatus
+#,skipbrokendatacall,facilitylock,datacall,icccardstatus
 
 # Disable HWAccel for now
 ADDITIONAL_BUILD_PROPERTIES += \
     ro.config.disable_hw_accel=true
 
 # Performance Tweaks
-#PRODUCT_PROPERTY_OVERRIDES += \
-#    pm.sleep_mode=1 \
-#    ro.ril.disable.power.collapse=0 \
-#    windowsmgr.max_events_per_sec=260
+PRODUCT_PROPERTY_OVERRIDES += \
+ pm.sleep_mode=1 \
+ ro.ril.disable.power.collapse=0 \
+ windowsmgr.max_events_per_sec=260 \
 
 #
 # Packages needed for Passion
@@ -85,11 +85,13 @@ PRODUCT_PACKAGES := \
     libOmxVidEnc \
     lights.mahimahi \
     sensors.mahimahi
+
 # Audio
 PRODUCT_PACKAGES += \
     audio.a2dp.default \
     audio.primary.qsd8k \
-    audio_policy.qsd8k
+    audio_policy.qsd8k \
+
 # GPU
 PRODUCT_PACKAGES += \
     copybit.qsd8k \
@@ -98,7 +100,8 @@ PRODUCT_PACKAGES += \
 #    hwcomposer.mahimahi \
 #    libgenlock \
 #    libmemalloc \
-#    libtilerenderer
+#    libtilerenderer \
+#    libQcomUI
 
 PRODUCT_LOCALES := es
 
