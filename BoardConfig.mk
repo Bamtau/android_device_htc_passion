@@ -48,28 +48,28 @@ TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a8 -mfpu=neon -mfloat-abi=softfp
 # Wifi related defines
 BOARD_WPA_SUPPLICANT_DRIVER := WEXT
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wext
-WPA_SUPPLICANT_VERSION      := VER_0_8_X
-BOARD_WLAN_DEVICE           := bcm4329
-WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/bcm4329.ko"
-WIFI_DRIVER_FW_PATH_STA     := "/vendor/firmware/fw_bcm4329.bin"
-WIFI_DRIVER_FW_PATH_AP      := "/vendor/firmware/fw_bcm4329_apsta.bin"
-WIFI_DRIVER_MODULE_ARG      := "firmware_path=/vendor/firmware/fw_bcm4329.bin nvram_path=/proc/calibration"
-WIFI_DRIVER_MODULE_NAME     := "bcm4329"
+WPA_SUPPLICANT_VERSION := VER_0_8_X
+BOARD_WLAN_DEVICE := bcm4329
+WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/bcm4329.ko"
+WIFI_DRIVER_FW_PATH_STA := "/vendor/firmware/fw_bcm4329.bin"
+WIFI_DRIVER_FW_PATH_AP := "/vendor/firmware/fw_bcm4329_apsta.bin"
+WIFI_DRIVER_MODULE_ARG := "firmware_path=/vendor/firmware/fw_bcm4329.bin nvram_path=/proc/calibration"
+WIFI_DRIVER_MODULE_NAME := "bcm4329"
 
 ##For when wifi is upgraded in 3.0
 # Connectivity - Wi-Fi
 #BOARD_WPA_SUPPLICANT_DRIVER := NL80211
-#WPA_SUPPLICANT_VERSION      := VER_0_8_X
+#WPA_SUPPLICANT_VERSION := VER_0_8_X
 #BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_bcmdhd
-#BOARD_HOSTAPD_DRIVER        := NL80211
-#BOARD_HOSTAPD_PRIVATE_LIB   := lib_driver_cmd_bcmdhd
-#BOARD_WLAN_DEVICE           := bcmdhd
-#BOARD_WLAN_DEVICE_REV       := bcm4329
-#WIFI_DRIVER_MODULE_NAME     := "bcmdhd"
-#WIFI_DRIVER_FW_PATH_PARAM   := "/sys/module/bcmdhd/parameters/firmware_path"
-#WIFI_DRIVER_FW_PATH_STA     := "/vendor/firmware/fw_bcmdhd.bin"
-#WIFI_DRIVER_FW_PATH_P2P     := "/vendor/firmware/fw_bcmdhd_p2p.bin"
-#WIFI_DRIVER_FW_PATH_AP      := "/vendor/firmware/fw_bcmdhd_apsta.bin"
+#BOARD_HOSTAPD_DRIVER := NL80211
+#BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_bcmdhd
+#BOARD_WLAN_DEVICE := bcmdhd
+#BOARD_WLAN_DEVICE_REV := bcm4329
+#WIFI_DRIVER_MODULE_NAME := "bcmdhd"
+#WIFI_DRIVER_FW_PATH_PARAM := "/sys/module/bcmdhd/parameters/firmware_path"
+#WIFI_DRIVER_FW_PATH_STA := "/vendor/firmware/fw_bcmdhd.bin"
+#WIFI_DRIVER_FW_PATH_P2P := "/vendor/firmware/fw_bcmdhd_p2p.bin"
+#WIFI_DRIVER_FW_PATH_AP := "/vendor/firmware/fw_bcmdhd_apsta.bin"
 
 BOARD_USES_GENERIC_AUDIO := false
 
@@ -83,13 +83,12 @@ BOARD_USE_KINETO_COMPATIBILITY := true
 #Compass/Accererometer
 BOARD_VENDOR_USE_AKMD := akm8973
 
-## Hardware rendering
-## doesn't actually work until we have hwcomposer
-#BOARD_USES_OVERLAY := true
-USE_OPENGL_RENDERER := false
+# Hardware rendering
 BOARD_EGL_CFG := device/htc/passion/egl.cfg
-## for rmcc egl hack
-COMMON_GLOBAL_CFLAGS += \
+BOARD_USES_OVERLAY := true
+#USE_OPENGL_RENDERER := true
+#BOARD_USES_HGL := true
+COMMON_GLOBAL_CFLAGS += -DMISSING_EGL_EXTERNAL_IMAGE -DMISSING_EGL_PIXEL_FORMAT_YV12 -DMISSING_GRALLOC_BUFFERS
 
 # Qcom board
 BOARD_VENDOR_QCOM_AMSS_VERSION := 3200
@@ -114,16 +113,16 @@ BOARD_USE_NEW_LIBRIL_HTC := true
 # From supersonic
 BOARD_USE_OPENSSL_ENGINE := true
 
-# cat /proc/mtd #AOSP                   # cat /proc/mtd #CM7
-# dev:    size   erasesize  name        # dev:    size   erasesize  name
-# mtd0: 000e0000 00020000 "misc"        # mtd0: 000e0000 00020000 "misc"
-# mtd1: 00500000 00020000 "recovery"    # mtd1: 00400000 00020000 "recovery"
-# mtd2: 00280000 00020000 "boot"        # mtd2: 00380000 00020000 "boot"
-# mtd3: 07800000 00020000 "system"      # mtd3: 09100000 00020000 "system"
-# mtd4: 07800000 00020000 "cache"       # mtd4: 05f00000 00020000 "cache"
-# mtd5: 0c440000 00020000 "userdata"    # mtd5: 0c440000 00020000 "userdata"
+# cat /proc/mtd #AOSP # cat /proc/mtd #CM7
+# dev: size erasesize name # dev: size erasesize name
+# mtd0: 000e0000 00020000 "misc" # mtd0: 000e0000 00020000 "misc"
+# mtd1: 00500000 00020000 "recovery" # mtd1: 00400000 00020000 "recovery"
+# mtd2: 00280000 00020000 "boot" # mtd2: 00380000 00020000 "boot"
+# mtd3: 07800000 00020000 "system" # mtd3: 09100000 00020000 "system"
+# mtd4: 07800000 00020000 "cache" # mtd4: 05f00000 00020000 "cache"
+# mtd5: 0c440000 00020000 "userdata" # mtd5: 0c440000 00020000 "userdata"
 # mtd6: 00200000 00020000 "crashdata"
-BOARD_BOOTIMAGE_PARTITION_SIZE := 0x00300000
+BOARD_BOOTIMAGE_PARTITION_SIZE := 0x00300000 #0x00380000
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x00400000
 ifneq ($(MINISKIRT),true)
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 230686720
