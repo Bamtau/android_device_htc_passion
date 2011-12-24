@@ -10,7 +10,7 @@ $(call inherit-product, vendor/cm/config/gsm.mk)
 #
 # Setup device specific product configuration.
 #
-PRODUCT_NAME := MeDroid_passion
+PRODUCT_NAME := cm_passion
 PRODUCT_BRAND := google
 PRODUCT_DEVICE := passion
 PRODUCT_MODEL := Nexus One
@@ -36,10 +36,13 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_MOTD :="\n\n\n--------------------MESSAGE---------------------\nGracias Por instalar MeDroidICS en tu Google Nexus One\nPor favor visitanos en \#Memoriandroid Memoriandroid.com\nsiguenos en twitter @memoriandroide\nsi te gusta nuestro trabajo compranos unas cervezas!\n------------------------------------------------\n"
 
 #
+# Extra Packages
+#
+PRODUCT_PACKAGES += Stk
 
 # Extra RIL settings
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.ril.enable.managed.roaming=1 \
+    ro.ril.enable.managed.roaming=0 \
     ro.ril.oem.nosim.ecclist=911,112,999,000,08,118,120,122,110,119,995 \
     ro.ril.emc.mode=2
 
@@ -50,7 +53,7 @@ PRODUCT_VERSION_DEVICE_SPECIFIC := -samuaz-$(shell date +%m%d%Y)
 PRODUCT_PACKAGES += \
     Camera \
     CMSettings \
-    UsbMassStorage
+    UsbMassStorage \
 
 # Get eng stuff on our userdebug builds
 ADDITIONAL_BUILD_PROPERTIES += ro.kernel.android.checkjni=1
