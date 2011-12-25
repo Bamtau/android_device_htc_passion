@@ -10,9 +10,8 @@ PRODUCT_COPY_FILES += device/htc/passion/extras/nexus-bootanimation.zip:system/m
 
 # Started as DT 2.7.5.3 Beta 4a
 # Ended as my own little a2sd script
-#PRODUCT_COPY_FILES += \
-#    device/htc/passion/extras/a2sd/system/bin/a2sd:system/bin/a2sd \
-#    device/htc/passion/extras/a2sd/system/etc/init.d/10apps2sd:system/etc/init.d/10apps2sd
+PRODUCT_COPY_FILES += \
+    device/htc/passion/extras/a2sd/system/etc/init.d/10apps2sd:system/etc/init.d/10apps2sd
 
 #    device/htc/passion/extras/a2sd/system/bin/fix_permissions:system/bin/fix_permissions \
 #    device/htc/passion/extras/a2sd/system/bin/zipalign:system/bin/zipalign \
