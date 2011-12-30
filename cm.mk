@@ -33,7 +33,7 @@ endif
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.build.romversion=MeDroid-$(PRODUCT_CODENAME)-$(BUILD_VERSION)
 
-PRODUCT_MOTD :="\n\n\n--------------------MESSAGE---------------------\nGracias Por instalar MeDroidICS en tu Google Nexus One\nPor favor visitanos en \#Memoriandroid Memoriandroid.com\nsiguenos en twitter @memoriandroide\nsi te gusta nuestro trabajo compranos unas cervezas!\n------------------------------------------------\n"
+PRODUCT_MOTD :="\n\n\n--------------------MeDroid---------------------\nGracias Por instalar MeDroidICS en tu Google Nexus One\nPor favor visitanos en \#Memoriandroid Memoriandroid.com\nsiguenos en twitter @memoriandroide\nsi te gusta nuestro trabajo compranos unas cervezas!\n------------------------------------------------\n"
 
 #
 # Extra Packages
@@ -67,7 +67,7 @@ ADDITIONAL_DEFAULT_PROPERTIES += persist.sys.strictmode.override=1
 #ADDITIONAL_DEFAULT_PROPERTIES += persist.sys.usb.config=mtp,adb
 
 # My extras
-$(call inherit-product-if-exists, device/htc/passion/extras/extras.mk)
+PRODUCT_COPY_FILES += device/htc/passion/extras/nexus-bootanimation.zip:system/media/bootanimation.zip
 
 # Get some Gapps
 $(call inherit-product-if-exists, gapps/gapps.mk)

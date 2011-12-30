@@ -26,7 +26,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
     wifi.supplicant_scan_interval=180 \
     ro.media.dec.jpeg.memcap=20000000 \
     ro.opengles.version=131072 \
-    dalvik.vm.heapsize=48m
+    dalvik.vm.heapsize=64m
 
 # Ril properties
 PRODUCT_PROPERTY_OVERRIDES += \
