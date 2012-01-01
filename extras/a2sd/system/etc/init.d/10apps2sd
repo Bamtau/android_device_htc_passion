@@ -1,49 +1,115 @@
 #!/system/bin/sh
 # Make sure the Apps2SD structure exists.
-# Originates from CM7, revised 20111220 by Andrew Sutherland for Evervolv ICS.
+# Originates from CM7 
+# Revised 20111220 by Andrew Sutherland for Evervolv ICS.
 
-SD_EXT_DIRECTORY=/sd-ext;
-#freshinstall="false";
-bb=/system/xbin/busybox;
+if [ "$SD_EXT_DIRECTORY" = "" ];
+then
+    SD_EXT_DIRECTORY=/sd-ext;
+fi;
+bb="/system/xbin/busybox";
+
+# make sure $SD_EXT_DIRECTORY is actually mounted
 if ! awk -vDIR="$SD_EXT_DIRECTORY" '$2 == DIR { exit 1; }' /proc/mounts ;
 then
-    for i in app app-private; # dalvik-cache data;
+  # if a2sd flag present we can continue
+  if [ -f $SD_EXT_DIRECTORY/.a2sd ];
+  then
+    for ii in app app-private;
     do
         # create directories if necessary.
-        if [ ! -d $SD_EXT_DIRECTORY/$i ];
+        if [ ! -d $SD_EXT_DIRECTORY/$ii ];
         then
-            mkdir $SD_EXT_DIRECTORY/$i;
-            $bb chown 1000:1000 $SD_EXT_DIRECTORY/$i;
-            $bb chmod 771 $SD_EXT_DIRECTORY/$i;
-            log -p i -t apps2sd "$SD_EXT_DIRECTORY/$i created";
+            $bb mkdir $SD_EXT_DIRECTORY/$ii;
+            $bb chown 1000:1000 $SD_EXT_DIRECTORY/$ii;
+            $bb chmod 771 $SD_EXT_DIRECTORY/$ii;
+            log -p i -t apps2sd "$SD_EXT_DIRECTORY/$ii created";
         fi;
-        # move apks/ create symlinks if necessary: Will only run after a wipe
-        if [ ! -h /data/$i ];
+        # move apks and create symlinks if necessary
+        if [ ! -h /data/$ii ];
         then
-            log -p i -t apps2sd "Moving apks in /data/$i";
-            #Not really necissary since there shouldn't be anything in it more of safety measure.
-            $bb mv -f /data/$i/* $SD_EXT_DIRECTORY/$i;
-            log -p i -t apps2sd "Removing /data/$i";
-            $bb rm -rf /data/$i;
-            log -p i -t apps2sd "Creating Symbolic link for /data/$i";
-            $bb ln -s $SD_EXT_DIRECTORY/$i /data/$i;
-#            $freshinstall="true";
+            log -p i -t apps2sd "Moving apks in /data/$ii";
+            $bb mv -f /data/$ii/* $SD_EXT_DIRECTORY/$ii;
+            log -p i -t apps2sd "Removing /data/$ii";
+            $bb rm -rf /data/$ii;
+            log -p i -t apps2sd "Creating Symbolic link for /data/$ii";
+            $bb ln -s $SD_EXT_DIRECTORY/$ii /data/$ii;
         fi;
     done
-#    if [ "$freshinstall" == "true" ];
-#    then
-#        log -p i -t apps2sd "Fixing permissions real quick";
-#        /system/bin/fix_permissions;
-#        log -p i -t apps2sd "Apps2sd installed... rebooting";
-#        $bb sync;
-#        $bb reboot -f;
-#    fi;
     setprop a2sd.mountpoint `cat /proc/mounts | grep "$SD_EXT_DIRECTORY" | awk '/^\// {print $1;exit;}'`
+    setprop ev.filesystem.ready 1;
     log -p i -t apps2sd "Apps2SD successfully activated";
-    log -p i -t apps2sd "Ending 10apps2sd";
-    setprop ev.filesystem.ready 1
+  else
+    for jj in app app-private;
+    do
+        # make sure we aren't still linking to the sdcard
+        # Note: we don't move the apks back to /data because the
+        # size of the app directory is likely much too large for /data
+        # TODO: maybe initiate a check to see if it will fit.
+        if [ -h /data/$jj ];
+        then
+            log -p i -t apps2sd "Removing Symbolic link for /data/$jj";
+            $bb rm -rf /data/$jj;
+            $bb mkdir /data/$jj;
+            log -p i -t apps2sd "/data/$jj created";
+        fi;
+    done;
+    log -p i -t apps2sd "A2sd flag not set. Disabling Apps2sd";
+    setprop a2sd.mountpoint "none";
+    setprop ev.filesystem.ready 1;
+  fi;
+  # Setup dalvik-cache
+  if [ -f $SD_EXT_DIRECTORY/.dc2sd ];
+  then
+    # create directory if needed
+    if [ ! -d $SD_EXT_DIRECTORY/dalvik-cache ];
+    then
+        $bb mkdir $SD_EXT_DIRECTORY/dalvik-cache;
+        $bb chown 1000:1000 $SD_EXT_DIRECTORY/dalvik-cache;
+        $bb chmod 771 $SD_EXT_DIRECTORY/dalvik-cache;
+        log -p i -t apps2sd "$SD_EXT_DIRECTORY/dalvik-cache created";
+    fi;
+    # set symlink to sdcard
+    if [ ! -h /data/dalvik-cache ];
+    then
+# no reason to move it just wipe it out and let it get rebuilt.
+#        log -p i -t apps2sd "Moving dalvik-cache to $SD_EXT_DIRECTORY";
+#        $bb mv -f /data/dalvik-cache/* $SD_EXT_DIRECTORY/dalvik-cache;
+        log -p i -t apps2sd "Removing /data/dalvik-cache";
+        $bb rm -rf /data/dalvik-cache;
+        log -p i -t apps2sd "Creating Symbolic link for dalvik-cache";
+        $bb ln -s $SD_EXT_DIRECTORY/dalvik-cache /data/dalvik-cache;
+    fi;
+    # this is how i am dealing with wipes
+    # if you just wiped obviously this flag wont be there so we know we should also
+    # clean the dalvik-cache folder on the sdcard so it can be rebuilt properly
+    if [ ! -f /data/.dc2sd ]
+    then
+        log -p i -t apps2sd "This is a first boot...Clearing $SD_EXT_DIRECTORY/dalvik-cache";
+        $bb rm -rf $SD_EXT_DIRECTORY/dalvik-cache/*;
+        $bb echo "x" > /data/.dc2sd;
+    fi;
+  else
+    # the dc2sd flag is not present so make sure everything is setup on /data
+    # we dont need to move it back since it can be rebuilt
+    if [ -h /data/dalvik-cache ];
+    then
+        log -p i -t apps2sd "Removing Symbolic link for dalvik-cache";
+        $bb rm -rf /data/dalvik-cache;
+        $bb mkdir /data/dalvik-cache;
+        log -p i -t apps2sd "/data/dalvik-cache created";
+    fi;
+    # remove since its not being used
+    if [ -d $SD_EXT_DIRECTORY/dalvik-cache ];
+    then
+        log -p i -t apps2sd "Removing $SD_EXT_DIRECTORY/dalvik-cache";
+        $bb rm -rf $SD_EXT_DIRECTORY/dalvik-cache;
+    fi;
+  fi;
+  log -p i -t apps2sd "Finished setting up dalvik-cache";
 else
-    log -p i -t apps2sd "$SD_EXT_DIRECTORY not mounted! Disabling Apps2sd";
-    setprop a2sd.mountpoint "none"
-    log -p i -t apps2sd "Ending 10apps2sd";
+  log -p i -t apps2sd "$SD_EXT_DIRECTORY not mounted! Disabling Apps2sd";
+  setprop a2sd.mountpoint "none";
+  setprop ev.filesystem.ready 0;
+  exit;
 fi;
