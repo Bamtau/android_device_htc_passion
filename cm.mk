@@ -25,9 +25,9 @@ PRIVATE_BUILD_DESC="passion-user 2.3.6 GRK39F 189904 release-keys"
 PRODUCT_CODENAME := Passion
 #PRODUCT_VERSION_DEVICE_SPECIFIC := v1
 ifeq ($(NIGHTLY_BUILD),true)
-    BUILD_VERSION := 1.0.0v1-$(shell date +%m%d%Y)-NIGHTLY
+    BUILD_VERSION := 1.0.0v4-$(shell date +%m%d%Y)-NIGHTLY
 else
-    BUILD_VERSION := 1.0.0v1
+    BUILD_VERSION := 1.0.0v4
 endif
 
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -40,12 +40,6 @@ PRODUCT_MOTD :="\n\n\n--------------------MeDroid---------------------\nGracias 
 #
 PRODUCT_PACKAGES += Stk
 
-# Extra RIL settings
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.ril.enable.managed.roaming=0 \
-    ro.ril.oem.nosim.ecclist=911,112,999,000,08,118,120,122,110,119,995 \
-    ro.ril.emc.mode=2
-
 # Release name and versioning
 PRODUCT_RELEASE_NAME := N1
 PRODUCT_VERSION_DEVICE_SPECIFIC := -samuaz-$(shell date +%m%d%Y)
@@ -55,18 +49,7 @@ PRODUCT_PACKAGES += \
     CMSettings \
     UsbMassStorage \
 
-# Get eng stuff on our userdebug builds
-ADDITIONAL_BUILD_PROPERTIES += ro.kernel.android.checkjni=1
-ADDITIONAL_DEFAULT_PROPERTIES += ro.secure=0
-ADDITIONAL_DEFAULT_PROPERTIES += ro.allow.mock.location=1
-# Disable visual strict mode, even on eng builds
-#PRODUCT_DEFAULT_PROPERTY += persist.sys.strictmode.visual=0
-ADDITIONAL_DEFAULT_PROPERTIES += persist.sys.strictmode.override=1
-# USB
-#ADDITIONAL_DEFAULT_PROPERTIES += persist.sys.usb.config=mass_storage,adb
-#ADDITIONAL_DEFAULT_PROPERTIES += persist.sys.usb.config=mtp,adb
-
-# My extras
+# Medroid bootanimation
 PRODUCT_COPY_FILES += device/htc/passion/extras/nexus-bootanimation.zip:system/media/bootanimation.zip
 
 # Get some Gapps
