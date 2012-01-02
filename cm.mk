@@ -49,6 +49,10 @@ PRODUCT_PACKAGES += \
     CMSettings \
     UsbMassStorage \
 
+#Disable visual strict mode, even on eng builds
+#PRODUCT_DEFAULT_PROPERTY += persist.sys.strictmode.visual=0
+ADDITIONAL_DEFAULT_PROPERTIES += persist.sys.strictmode.override=1
+
 # Medroid bootanimation
 PRODUCT_COPY_FILES += device/htc/passion/extras/nexus-bootanimation.zip:system/media/bootanimation.zip
 
