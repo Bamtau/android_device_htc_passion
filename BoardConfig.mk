@@ -99,6 +99,10 @@ BOARD_USE_NEW_LIBRIL_HTC := true
 # Misc
 BOARD_USE_OPENSSL_ENGINE := true
 
+# Hacks
+TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/usb_mass_storage/lun0/file
+BOARD_USE_LEGACY_TRACKPAD := true
+
 # cat /proc/mtd #AOSP                   # cat /proc/mtd #CM7
 # dev:    size   erasesize  name        # dev:    size   erasesize  name
 # mtd0: 000e0000 00020000 "misc"        # mtd0: 000e0000 00020000 "misc"
@@ -110,7 +114,7 @@ BOARD_USE_OPENSSL_ENGINE := true
 # mtd6: 00200000 00020000 "crashdata"
 BOARD_BOOTIMAGE_PARTITION_SIZE := 0x00300000 #0x00380000
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x00400000
-#TARGET_USERIMAGES_USE_EXT4 := true #fuck why is this so hard to implement?
+
 ifeq ($(MINISKIRT),true)
 # Less fonts saves ~2mb
 SMALLER_FONT_FOOTPRINT := true
@@ -126,9 +130,5 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 209715200
 endif
 
 BOARD_FLASH_BLOCK_SIZE := 131072
-
-# Hacks
-TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/usb_mass_storage/lun0/file
-BOARD_USE_LEGACY_TRACKPAD := true
 
 TARGET_RELEASETOOLS_EXTENSIONS := device/htc/common

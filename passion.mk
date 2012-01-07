@@ -27,13 +27,13 @@ PRODUCT_PROPERTY_OVERRIDES := \
     wifi.supplicant_scan_interval=180 \
     ro.media.dec.jpeg.memcap=20000000 \
     ro.opengles.version=131072 \
-    dalvik.vm.heapsize=48m
+    dalvik.vm.heapsize=64m
 
 # Ril properties
 PRODUCT_PROPERTY_OVERRIDES += \
     rild.libpath=/system/lib/libhtc_ril.so \
     ro.ril.enable.managed.roaming=1 \
-    ro.ril.oem.nosim.ecclist=911,112,999,000,08,118,120,122,110,119,995,199 \
+    ro.ril.oem.nosim.ecclist=911,112,999,000,08,118,120,122,110,119,995 \
     ro.ril.emc.mode=2 \
     ro.ril.hsxpa=2 \
     ro.ril.gprsclass=10
@@ -60,14 +60,19 @@ ADDITIONAL_BUILD_PROPERTIES += ro.config.disable_hw_accel=true
 # Set usb type
 ADDITIONAL_DEFAULT_PROPERTIES += \
     persist.sys.usb.config=mass_storage \
-    persist.service.adb.enable=1
-
+    persist.service.adb.enable=1 \
+    usb_wakeup=enable
 
 # Performance Tweaks
 PRODUCT_PROPERTY_OVERRIDES += \
     pm.sleep_mode=1 \
     ro.ril.disable.power.collapse=0 \
-    windowsmgr.max_events_per_sec=260
+    windowsmgr.max_events_per_sec=260 \
+    ro.telephony.call_ring.delay=0 \
+    ro.lge.proximity.delay=10 \
+    mot.proximity.delay=10 \
+    Debug.performance.tuning=1 \
+    Video.accelerate.hw=1
 
 #
 # Packages needed for Passion
@@ -76,9 +81,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES := \
     com.android.future.usb.accessory \
     gps.mahimahi \
-    librs_jni \
-    libOmxCore \
-    libOmxVidEnc \
     lights.mahimahi \
     sensors.mahimahi
 # Audio
@@ -100,15 +102,9 @@ PRODUCT_PACKAGES += \
 # Omx
 PRODUCT_PACKAGES += \
     libOmxCore \
-    libOmxVenc \
+    libOmxVidEnc \
     libOmxVdec \
     libstagefrighthw
-
-## Filesystem management tools
-#PRODUCT_PACKAGES += \
-#    make_ext4fs \
-#    setup_fs \
-#    bml_over_mtd
 
 # Passion uses high-density artwork where available
 PRODUCT_AAPT_CONFIG := normal hdpi
